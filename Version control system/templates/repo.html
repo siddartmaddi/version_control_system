@@ -1,0 +1,130 @@
+<html>
+    <head>
+    <script>$(document).ready(function(){
+        //$("#select1").one("click",load_new_content);
+        $("#select1").change(load_new_content());
+    });
+    function contents(root, folders)
+    {
+      var fold = [];
+      var j;
+      var div = document.getElementById("contents");
+      $(div).empty()
+      for (j = 0; j < folders.length; j++) {
+        if(folders[j].indexOf('/')!=-1 && folders[j].substr(0,folders[j].indexOf('/')).localeCompare(root) == 0)
+        fold.push(folders[j].substr(folders[j].indexOf('/')+1));
+        }
+      for (j = 0; j < fold.length; j++){
+        if(fold[j].split("/").length ==1)
+        {
+          let folder = document.createElement("button");
+          folder.className = "repobtn";
+          folder.innerHTML = fold[j];
+          folder.onclick = function() {
+            contents(folder.innerHTML,fold);
+          };
+          div.appendChild(folder);
+        }
+      }
+    }
+    function load_new_content(){
+     var selected_option_value=$("#select1 option:selected").val();
+     $.post("/change_branch", {branch: selected_option_value},
+     function(data) {
+        // $("#result").text(data.result);
+        var i;
+        var div = document.getElementById("contents");
+        $(div).empty()
+        for (i = 0; i < data.folders.length; i++) {
+        if(data.folders[i].split("/").length == 1)
+        {
+          let button = document.createElement("button");
+          button.className = "repobtn"
+          button.innerHTML = data.folders[i];
+          div.appendChild(button);
+          button.addEventListener ("click", function() {
+              contents(button.innerHTML,data.folders);
+          });
+        }
+        }
+    });
+    }
+  </script>
+  </head>
+    <style>
+    body{
+      background-color: black;
+    }
+    .registerbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      opacity: 0.9;
+    }
+    .registerbtn:hover {
+      opacity: 1;
+    }
+    .repobtn {
+      background-color: #e7e7e7;
+      color: rgb(0, 0, 0);
+      padding: 16px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 90%;
+      /* opacity: 0.9; */
+    }
+    .repobtn:hover {
+      background-color: #8f8e8e;
+    }
+
+    .trashbtn{
+      background-color: #fdfdfd;
+      border: none;
+      cursor: pointer;
+      margin-left: 8px;
+      vertical-align: middle;
+      border: 3px solid transparent;
+    }
+    .trashbtn:hover {
+      border: 3px solid #b4adad;
+    }
+
+    .cancelbtn {
+        width: auto;
+        padding: 10px 18px;
+        margin: 10px 5px;
+    }
+
+    </style>
+    <body>
+        <br><br>
+        <select name="select1" id="select1" onchange='load_new_content()'>
+            <option value="dummy">change branch</option>
+        {% for i in branches %}
+            <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+        </select>
+        <a href="{{ url_for('push') }}"> <button type="button" class="cancelbtn"> Push</button></a>
+        <a href="{{ url_for('pull') }}"> <button type="button" class="cancelbtn"> Pull </button></a>
+        <a href="{{ url_for('afterclone') }}"> <button type="button" class="cancelbtn"> clone </button></a>
+        <a href="{{ url_for('version') }}"> <button type="button" class="cancelbtn"> Version history </button></a>
+        <a href="{{ url_for('homecoming') }}"> <button type="button" class="cancelbtn"> Back </button></a>
+        <a href="{{ url_for('back') }}"> <button type="button" class="cancelbtn"> Reset </button></a>
+
+
+
+
+
+        <h2 style="color:white;">Your contents:</h2>
+        <div id="contents"></div>
+        <script></script>
+        <script type=text/javascript src="{{
+            url_for('static', filename='jquery-3.6.0.js') }}"></script>
+    </body>
+
+</html>

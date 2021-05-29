@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: black;
+}
+.container {
+    padding: 50px;
+  background-color: grey;
+}
+
+input[type=text], input[type=password], textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+input[type=text]:focus, input[type=password]:focus {
+  background-color: orange;
+  outline: none;
+}
+ div {
+            padding: 10px 0;
+         }
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.registerbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.registerbtn:hover {
+  opacity: 1;
+}
+.mergebtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+  .mergebtn:hover {
+    opacity: 1;
+  }
+  .prsbtn {
+    background-color: #e7e7e7;
+    color: rgb(0, 0, 0);
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 90%;
+    /* opacity: 0.9; */
+  }
+  .hide{
+    visibility: hidden;
+  }
+</style>
+</head>
+<body>
+<a href = "{{ url_for('back')}}"><button class="registerbtn">BACK</button></a>
+<form action = "http://localhost:5000/afterpull" method = "POST"
+  enctype = "multipart/form-data">
+  <div class="container">
+  <center>  <h1> Pull Requests</h1> </center>
+  <hr>
+  <label> Source branch </label>
+  <input type="text" name="source" placeholder= "Enter Source branch" size="15"  />
+  <label for="psw"><b>Destination Branch</b></label>
+  <input type="text" placeholder="Enter Destination Branch" name="destination" >
+  <button type="submit" class="registerbtn">PULL</button>
+  </div>
+  <h2>Your Pull Requests</h2>
+  <div id = "prs"></div>
+</form>
+<script>
+  var i;
+  var a = {{ prs|tojson }};
+  var prs = a.some;
+  for (i = 0; i < prs.length; i++) {
+    var button = document.createElement("button");
+    var index = document.createElement("index");
+    var merge = document.createElement("merge");
+    button.className = "prsbtn"
+    button.innerHTML = prs[i];
+    index.innerHTML = i+1;
+    index.className = "hide"
+    merge.className = "mergebtn"
+    merge.innerHTML = 'merge';
+    var div = document.getElementById("prs");
+    div.appendChild(button);
+    div.appendChild(merge);
+    div.appendChild(index);
+    merge.addEventListener ("click", function() {
+      var des = prompt("Enter commit description");
+      if (des != null) {
+      $.post("/merge_request", {index: index.innerHTML, desc:des});
+      merge.parentNode.removeChild(button)
+      merge.parentNode.removeChild(merge)
+      }
+    });
+    }
+  </script>
+  <script type=text/javascript src="{{
+    url_for('static', filename='jquery-3.6.0.js') }}"></script>
+  }
+</script>
+</body>
+</html>

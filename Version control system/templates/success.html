@@ -1,0 +1,93 @@
+<html>
+    <style>
+    body{
+      background-color: black;
+    }
+    .registerbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      opacity: 0.9;
+    }
+    .registerbtn:hover {
+      opacity: 1;
+    }
+    .repobtn {
+      background-color: #e7e7e7;
+      color: rgb(0, 0, 0);
+      padding: 16px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 90%;
+      /* opacity: 0.9; */
+    }
+    .repobtn:hover {
+      background-color: #8f8e8e;
+    }
+
+    .trashbtn{
+      background-color: #fdfdfd;
+      border: none;
+      cursor: pointer;
+      margin-left: 8px;
+      vertical-align: middle;
+      border: 3px solid transparent;
+    }
+    .trashbtn:hover {
+      border: 3px solid #b4adad;
+    }
+
+    </style>
+    <body>
+        <h1 style="color:white;">Welcome {{username}} !!</h1>
+        <a href="{{ url_for('createrepo') }}"> <button type="button" class="registerbtn"> Create Repository</button></a>
+        <a href="{{ url_for('home') }}"> <button type="button" class="registerbtn"> logout</button></a>
+        <br><br>
+        <h2 style="color:white;">Your repositories</h2>
+        <div id="repos"></div>
+        <h2 style="color:white;">Your collaborations</h2>
+        <div id = "collabs"></div>
+        <script>
+          var i;
+          var limit = 1;
+          var a = {{ repos|tojson }};
+          var b = {{ collabs|tojson }};
+          var repo = a.some;
+
+          var collabs = b.some;
+          for (i = 0; i < repo.length; i++) {
+            let button = document.createElement("button");
+            let trash = document.createElement("trash");
+            button.className = "repobtn"
+            button.innerHTML = repo[i];
+            trash.className = "trashbtn"
+            trash.innerHTML = '<img src = "{{ url_for("static", filename = "trash.jpg") }}" width="30px" height="30px">';
+            var div = document.getElementById("repos");
+            div.appendChild(button);
+            div.appendChild(trash);
+            button.addEventListener ("click", function() {
+              location.href = 'http://localhost:5000/repo/'+button.innerHTML;
+            });
+            trash.addEventListener ("click", function() {
+              location.href = 'http://localhost:5000/delete/'+button.innerHTML;
+            });
+          }
+          for (i = 0; i < collabs.length; i++) {
+            let button = document.createElement("button");
+            button.className = "repobtn"
+            button.innerHTML = collabs[i];
+            var div = document.getElementById("collabs");
+            div.appendChild(button);
+            button.addEventListener ("click", function() {
+              location.href = 'http://localhost:5000/repo/'+button.innerHTML;
+            });
+          }
+        </script>
+    </body>
+
+</html>

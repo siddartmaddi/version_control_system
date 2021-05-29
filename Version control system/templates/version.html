@@ -1,0 +1,54 @@
+<html>
+<head>
+<style>
+body{
+  background-color: black;
+  text-decoration-color: white;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: red;
+}
+.cancelbtn {
+    position: relative;
+    width: auto;
+    padding: 10px 18px;
+    margin: 10px 5px;
+    margin-left:1200px;
+}
+</style>
+</head>
+<body>
+<a href="{{ url_for('back') }}"> <button type="button" class="cancelbtn"> back </button></a>
+
+<h2 style="color:white;">Version History</h2>
+
+
+<table style="color:white;">
+  <tr>
+    {% for i in headers %}
+    <th>{{i}}</th>
+    {% endfor %}
+  </tr>
+  {% for i in rows %}
+  <tr>
+    {% for j in i %}
+    <td>{{j}}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>

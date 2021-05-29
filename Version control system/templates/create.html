@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: black;
+}
+.container {
+    padding: 50px;
+  background-color: grey;
+}
+
+input[type=text], input[type=password], textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+input[type=text]:focus, input[type=password]:focus {
+  background-color: orange;
+  outline: none;
+}
+ div {
+            padding: 10px 0;
+         }
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.registerbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.registerbtn:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+<form action = "http://localhost:5000/success/repocreated" method = "POST"
+  enctype = "multipart/form-data">
+  <div class="container">
+  <center>  <h1> Create Repository </h1> </center>
+  <hr>
+  <label> Repository Name </label>
+  <input type="text" name="repo_name" placeholder= "name" size="15" required />
+  <label for="desc"><b>Description</b></label>
+  <input type="text" name="description" placeholder= "Description" required>
+  <label for="collaborators"><b>collaborators</b></label>
+  <input type="text"  name="collaborators" placeholder= "collaborators" >
+  <label for="readme"><b>Readme</b></label>
+  <br>
+  <input type=radio name=readme value=1> Yes <br/>
+  <input type=radio name=readme value=0> No <br/>
+  <br>
+  <label for="visibility"><b>Visibility</b></label>
+  <br>
+  <input type=radio name=visibility value=1> Yes <br/>
+  <input type=radio name=visibility value=0> No <br/>
+
+
+
+
+
+  <button type="submit" class="registerbtn">create</button>
+</form>
+</body>
+</html>

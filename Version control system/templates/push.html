@@ -1,0 +1,97 @@
+<html>
+<style>
+body{
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: black;
+}
+.container {
+    padding: 50px;
+  background-color: grey;
+}
+
+input[type="file"] {
+    display: none;
+}
+ div {
+            padding: 10px 0;
+         }
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.registerbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.registerbtn:hover {
+  opacity: 1;
+}
+.custom-file-upload {
+    color:white;
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-align: center;
+}
+    input[type=text], input[type=password], textarea {
+      width: 100%;
+      padding: 15px;
+      margin: 5px 0 22px 0;
+      display: inline-block;
+      border: none;
+      background: #f1f1f1;
+    }
+    input[type=text]:focus, input[type=password]:focus {
+      background-color: orange;
+      outline: none;
+    }
+    
+
+</style>
+  <head>
+  </head>
+  <body>
+    <h1 style="color:white;text-align:center;">Push folder</h1>
+    <form method="post" action = "http://localhost:5000/afterpush" enctype="multipart/form-data">
+      <label for="file-upload" class="custom-file-upload">
+      Custom Upload
+      </label>
+      <input style="width:200px" id="file-upload" type="file" onchange="selectFolder(event)" webkitdirectory mozdirectory msdirectory odirectory directory multiple />
+      <br><br><br>
+      <label style="color:white" for="desc"><b> Description: </b></label>
+      <input type="text" name="description" placeholder= "Description" required>
+      <br><br><br>
+      <label for="br" style="color:white" ><b>Upload to:</b></label>
+      <br><br>
+      <input  style="color:white" type=radio name=whichbr value=0>
+      <label for="br" style="color:white" ><b>Upload to master</b></label><br><br>
+      <input  style="color:white" type=radio name=whichbr  value=1>
+      <label for="br" style="color:white" ><b>Create new branch</b></label><br><br>
+      <label style="color:white" for="desc"><b> Branch name: </b></label>
+      <input type="text" name="branch_name" placeholder= "Branch name" >
+      <input  style="color:white" type=radio name=whichbr  value=2>
+      <label for="br" style="color:white" ><b>existing branch</b></label><br><br>
+
+      <br><br>
+
+        <input class="registerbtn" type="submit" value="push" />
+    </form>
+    <script type="text/javascript">
+      function selectFolder(e) {
+          var theFiles = e.target.files;
+          var relativePath = theFiles[0].webkitRelativePath;
+          var folder = relativePath.split("/");
+          $.post("/change_folder", {folder_name: folder[0]});
+      }
+    </script>
+    <script type=text/javascript src="{{
+      url_for('static', filename='jquery-3.6.0.js') }}"></script>
+  </body>
+</html>
